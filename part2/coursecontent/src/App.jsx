@@ -6,6 +6,7 @@ const Course = ({course}) => {
   return <div>
     <Header course={course.name}/>
     <Content parts={course.parts}/>
+    <Total sum={(course.parts).reduce((prev,current)=>prev+current.exercises,0)}/>
   </div>
 }
 
