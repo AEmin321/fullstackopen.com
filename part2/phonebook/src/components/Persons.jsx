@@ -1,7 +1,7 @@
 const Person = ({persons})=> {
-    return <ul>
+    return <ol>
         {persons.map(item=><li key={item.id}>{item.name} - {item.number}</li>)}
-  </ul>
+  </ol>
 }
 
 export default Person;
