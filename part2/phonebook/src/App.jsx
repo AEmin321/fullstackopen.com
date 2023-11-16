@@ -32,6 +32,11 @@ const App = () => {
         setTimeout(() => {
           setNotification(null)
         }, 5000);
+      }).catch(error=>{
+        setNotification('An ERROR occured .')
+        setTimeout(() => {
+          setNotification(null)
+        }, 3000);
       })
     }
   }
@@ -69,6 +74,11 @@ const App = () => {
             setTimeout(() => {
               setNotification(null)
             }, 5000);
+          }).catch(error=>{
+            setNotification('An ERROR occured.')
+            setTimeout(() => {
+              setNotification(null)
+            }, 3000);
           })
         }
       }
@@ -86,6 +96,11 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000);
+    }).catch(error=>{
+      setNotification('An ERROR occured, cant add the contact.')
+      setTimeout(() => {
+        setNotification(null)
+      }, 3000);
     })
     setNewName('')
     setNewNumber('')
