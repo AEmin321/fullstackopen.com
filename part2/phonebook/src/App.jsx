@@ -45,8 +45,26 @@ const App = () => {
 
   const handleSubmit=(event)=>{
     event.preventDefault()
-    if (persons.some((item)=>item.name===newName)) {
-      return alert(`${newName}  is already added to phonebook.`)
+    const findValue=persons.some(item=>item.name===newName)
+    console.log(findValue)
+
+    if(findValue) {
+      const selected=persons.find(item=>item.name===newName)
+      if (selected.name===newName && selected.number===newNumber) {
+        return alert(`${newName} and ${newNumber} already exists in your phonebook.`)
+      }
+  
+      if (selected.name===newName && selected.number!==newNumber) {
+        const updatedObj ={...selected ,number:newNumber}
+        if(window.confirm(`${selected.name} is already in your phonebook, do you want to update the phone number ?`)) {
+          services.updateData(selected.id,updatedObj).then(data=>{
+            setPersons(persons.map(item=>item.id!==data.id ? item : data))
+          })
+        }
+      }
+      setNewName('')
+      setNewNumber('')
+      return
     }
     const newObj={
       name: newName,
@@ -54,9 +72,9 @@ const App = () => {
     }
     services.postData(newObj).then(res=>{
       setPersons(persons.concat(res))
-      setNewName('')
-      setNewNumber('')
     })
+    setNewName('')
+    setNewNumber('')
   }
 
   return (
