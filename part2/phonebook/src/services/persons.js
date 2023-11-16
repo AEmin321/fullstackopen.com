@@ -13,4 +13,9 @@ const postData = (newObj)=> {
     return req.then(res=>res.data)
 }
 
-export default { getData, postData}
+const deleteData = (id)=> {
+    const req = axios.delete(`${url}/${id}`)
+    return req.then(res=>res.data)
+}
+
+export default { getData, postData, deleteData}

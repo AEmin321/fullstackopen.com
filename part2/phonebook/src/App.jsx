@@ -21,6 +21,15 @@ const App = () => {
 
   const allPersons=filter ? persons.filter(item=>item.name.toLowerCase().includes(filterValue.toLowerCase())) : persons
 
+  const handleDelete =(id)=>{
+    const getObj = persons.find(item=>item.id===id)
+    if (window.confirm(`Are you sure you want to delete ${getObj.name}`)) {
+      services.deleteData(id).then(data=>{
+        setPersons(persons.filter(item=>item.id!==id))
+      })
+    }
+  }
+
   const handleFilter =(event)=>{
     setFilterValue(event.target.value)
     setFilter(true)
@@ -57,7 +66,7 @@ const App = () => {
       <h2>Add New</h2>
       <PersonForm newName={newName} handleName={handleName} newNumber={newNumber} handleNumber={handleNumber} handleSubmit={handleSubmit}/>
       <h2>Numbers</h2>
-      <Person persons={allPersons}/>
+      <Person persons={allPersons} handleDelete={handleDelete}/>
     </div>
   )
 }
