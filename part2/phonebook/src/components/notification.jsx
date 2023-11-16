@@ -7,7 +7,7 @@ const Notification = ({message})=> {
     }
     const erStyle={
         color:'white',
-        background:'FF6969',
+        background:'#FF6969',
         padding:'6px 12px',
         borderRadius:5
     }

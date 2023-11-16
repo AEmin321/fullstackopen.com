@@ -33,7 +33,8 @@ const App = () => {
           setNotification(null)
         }, 5000);
       }).catch(error=>{
-        setNotification('An ERROR occured .')
+        setNotification(`ERROR, ${getObj.name} already deleted from the server.`)
+        setPersons(persons.filter(item=>item.id!==id))
         setTimeout(() => {
           setNotification(null)
         }, 3000);
