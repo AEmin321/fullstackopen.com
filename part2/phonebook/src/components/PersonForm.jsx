@@ -1,13 +1,13 @@
 const PersonForm = ({newName,handleName,newNumber,handleNumber,handleSubmit})=> {
     return <form>
-        <div>
-            name: <input value={newName} onChange={handleName}/>
+        <div className="input-con">
+            <label htmlFor="name">Name :</label> <input id="name" value={newName} onChange={handleName}/>
         </div>
-        <div>
-            number: <input value={newNumber} type="tel" onChange={handleNumber}/>
+        <div className="input-con">
+            <label htmlFor="number">Number :</label><input id="number" value={newNumber} type="tel" onChange={handleNumber}/>
         </div>
-        <div>
-            <button onClick={handleSubmit} type="submit">add</button>
+        <div className="input-con">
+            <button onClick={handleSubmit} type="submit">add new contact</button>
         </div>
   </form>
 }

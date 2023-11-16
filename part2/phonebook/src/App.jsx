@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm'
 import Person from './components/Persons'
 import axios from 'axios'
 import services from './services/persons'
+import Notification from './components/notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterValue,setFilterValue] = useState('')
   const [filter,setFilter] = useState(false)
+  const [notification,setNotification] = useState(null)
 
   useEffect(()=>{
     services.getData().then(data=>{
@@ -26,6 +28,10 @@ const App = () => {
     if (window.confirm(`Are you sure you want to delete ${getObj.name}`)) {
       services.deleteData(id).then(data=>{
         setPersons(persons.filter(item=>item.id!==id))
+        setNotification(`${getObj.name} was successfully removed.`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000);
       })
     }
   }
@@ -59,6 +65,10 @@ const App = () => {
         if(window.confirm(`${selected.name} is already in your phonebook, do you want to update the phone number ?`)) {
           services.updateData(selected.id,updatedObj).then(data=>{
             setPersons(persons.map(item=>item.id!==data.id ? item : data))
+            setNotification(`${data.name} number was successfully updated.`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000);
           })
         }
       }
@@ -72,13 +82,18 @@ const App = () => {
     }
     services.postData(newObj).then(res=>{
       setPersons(persons.concat(res))
+      setNotification(`${newObj.name} was successfully added.`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000);
     })
     setNewName('')
     setNewNumber('')
   }
 
   return (
-    <div>
+    <div className='main'>
+      <Notification message={notification}/>
       <h2>Phonebook</h2>
       <Filter filterValue={filterValue} handleFilter={handleFilter}/>
       <h2>Add New</h2>
