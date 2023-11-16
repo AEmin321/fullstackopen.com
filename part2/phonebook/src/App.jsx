@@ -3,26 +3,27 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Persons'
 import axios from 'axios'
+import services from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterValue,setFilterValue] = useState('')
-  const [filter,setFilter] = useState(true)
+  const [filter,setFilter] = useState(false)
 
   useEffect(()=>{
-    axios.get('http://localhost:3002/persons').then(promise=>{
-      setPersons(promise.data)
-      console.log('Done from effect')
+    services.getData().then(data=>{
+      setPersons(data)
+      console.log('inside effect')
     })
   },[])
 
-  const allPersons=filter ? persons : persons.filter(item=>item.name.toLowerCase().includes(filterValue.toLowerCase()))
+  const allPersons=filter ? persons.filter(item=>item.name.toLowerCase().includes(filterValue.toLowerCase())) : persons
 
   const handleFilter =(event)=>{
     setFilterValue(event.target.value)
-    setFilter(false)
+    setFilter(true)
   }
 
   const handleName=(event)=>{
@@ -42,8 +43,8 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    axios.post('http://localhost:3002/persons',newObj).then(res=>{
-      setPersons(persons.concat(res.data))
+    services.postData(newObj).then(res=>{
+      setPersons(persons.concat(res))
       setNewName('')
       setNewNumber('')
     })
