@@ -4,9 +4,8 @@ import SearchedCountries from './components/searchedCountries'
 
 function App() {
   const [countries, setCountries] = useState([])
-  const [search, setSearch] = useState('')
-  
-  const result = countries.filter(item=>item.name.common.includes(search))
+  const [searchedCountries, setSearchedCountries] = useState([])
+
   
   useEffect (()=>{
     axios.get('https://studies.cs.helsinki.fi/restcountries/api/all').then(res=>{
@@ -15,7 +14,13 @@ function App() {
   },[])
 
   const handleQuery = (event) => {
-    setSearch(event.target.value)
+    setSearchedCountries(countries.filter(item=>item.name.common.toLowerCase().includes(event.target.value.toLowerCase())))
+    console.log(searchedCountries)
+  }
+
+  const handleShowMore = (countryName) => {
+    const getItem = searchedCountries.find(item=>item.name.common===countryName)
+    setSearchedCountries([getItem])
   }
 
   return (
@@ -24,7 +29,7 @@ function App() {
         <label htmlFor="search">Search for country:</label>
         <input type="text" id='search' onChange={handleQuery}/>
         <div>
-          {result.length < 10 ? <SearchedCountries countryList={result}/>  : `${result.length} result found, specify another filter.`}
+          {searchedCountries.length < 10 ? <SearchedCountries countryList={searchedCountries} handleShowMore={handleShowMore}/>  : `${searchedCountries.length} result found, specify another filter.`}
         </div>
       </div>
     </div>
