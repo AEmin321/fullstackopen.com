@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const persons=[
+let persons=[
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -32,6 +32,12 @@ app.get ('/api/info',(req,res)=>{
     const now = new Date()
     const getDate = now.toLocaleString()
     res.send (`<div><h3>Phonebook had info for ${persons.length} people.</h3><p>${getDate}</p></div>`)
+})
+
+app.delete ('/api/persons/:id',(req,res)=>{
+  const id = Number(req.params.id)
+  persons=persons.filter(item=>item.id!==id)
+  res.status(204).end()
 })
 
 app.get ('/api/persons/:id',(req,res)=>{
