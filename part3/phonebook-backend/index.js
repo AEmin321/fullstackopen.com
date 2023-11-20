@@ -31,7 +31,18 @@ const randomID = () => {
 
 app.post ('/api/persons',(req,res)=>{
   const data = req.body
-  
+  if (!data.number || !data.name) {
+    return res.status(400).json({
+      error : "name or number is missing ."
+    })
+  }
+  const isExist=persons.some(item=>item.name===data.name)
+  console.log(isExist)
+  if (isExist) {
+    return res.status(406).json({
+      error:"name must be unique."
+    })
+  }
   const person = {
     id : randomID(),
     name : data.name,
