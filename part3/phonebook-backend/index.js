@@ -39,29 +39,22 @@ const randomID = () => {
 
 app.post ('/api/persons',(req,res)=>{
   const data = req.body
-  if (!data.number || !data.name) {
-    return res.status(400).json({
-      error : "name or number is missing ."
-    })
+  if (data.name===undefined || data.number===undefined){
+    return res.status(400).json({error:'Name or the number is missing.'})
   }
-  const isExist=persons.some(item=>item.name===data.name)
-  console.log(isExist)
-  if (isExist) {
-    return res.status(406).json({
-      error:"name must be unique."
-    })
-  }
-  const person = {
-    id : randomID(),
-    name : data.name,
-    number : data.number
-  }
-  persons.concat(person)
-  res.json(person)
+  const newContact = new Contact({
+    name: data.name,
+    number: data.number
+  })
+  newContact.save().then(response=>{
+    res.json(response)
+  })
 })
 
 app.get ('/api/persons',(req,res)=>{
-    res.json(persons)
+    Contact.find({}).then(response=>{
+      res.json(response)
+    })
 })
 
 app.get ('/api/info',(req,res)=>{
@@ -77,14 +70,11 @@ app.delete ('/api/persons/:id',(req,res)=>{
 })
 
 app.get ('/api/persons/:id',(req,res)=>{
-    const id = Number(req.params.id)
-    const person = persons.find(item=>item.id===id)
-    
-    if (person) {
-        res.json(person)
-    } else {
-        res.status(404).end()
-    }
+    Contact.findById(req.params.id).then(response=>{
+      res.json(response)
+    }).catch(error=>{
+      console.log('cant find the given contact.',error)
+    })
 })
 
 const PORT = process.env.PORT||3000
