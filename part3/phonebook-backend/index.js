@@ -72,7 +72,9 @@ app.get ('/api/persons',(req,res)=>{
 app.get ('/api/info',(req,res)=>{
     const now = new Date()
     const getDate = now.toLocaleString()
-    res.send (`<div><h3>Phonebook had info for ${persons.length} people.</h3><p>${getDate}</p></div>`)
+    Contact.find({}).count().then(response=>{
+      res.send(`<div><h3>Phonebook had info for ${response} people.</h3><p>${getDate}</p></div>`)
+    })
 })
 
 app.delete ('/api/persons/:id',(req,res,next)=>{
@@ -91,12 +93,10 @@ app.put ('/api/persons/:id',(req,res,next)=>{
   }).catch(error=>next(error))
 })
 
-app.get ('/api/persons/:id',(req,res)=>{
+app.get ('/api/persons/:id',(req,res,next)=>{
     Contact.findById(req.params.id).then(response=>{
       res.json(response)
-    }).catch(error=>{
-      console.log('cant find the given contact.',error)
-    })
+    }).catch(error=>next(error))
 })
 
 app.use(unknownEndPoints)
