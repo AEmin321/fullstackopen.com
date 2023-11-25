@@ -3,6 +3,18 @@ const morgan = require('morgan')
 require('dotenv').config()
 const Contact = require('./modules/contact')
 const app = express()
+
+const unknownEndPoints = (req,res)=> {
+  res.status(404).send({error:'Unknown end point.'})
+}
+
+const errorHandler = (error,req,res,next) =>{
+  console.error(error.message)
+  if (error.name==='CastError') {
+    return res.status(400).send({error:'input id is not valid.'})
+  }
+}
+
 app.use (express.json())
 app.use (express.static('dist'))
 
@@ -63,10 +75,10 @@ app.get ('/api/info',(req,res)=>{
     res.send (`<div><h3>Phonebook had info for ${persons.length} people.</h3><p>${getDate}</p></div>`)
 })
 
-app.delete ('/api/persons/:id',(req,res)=>{
-  const id = Number(req.params.id)
-  persons=persons.filter(item=>item.id!==id)
-  res.status(204).end()
+app.delete ('/api/persons/:id',(req,res,next)=>{
+  Contact.findByIdAndDelete(req.params.id).then(response=>{
+    res.status(204).end()
+  }).catch(error=>next(error))
 })
 
 app.get ('/api/persons/:id',(req,res)=>{
