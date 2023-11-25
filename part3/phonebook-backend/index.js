@@ -81,6 +81,16 @@ app.delete ('/api/persons/:id',(req,res,next)=>{
   }).catch(error=>next(error))
 })
 
+app.put ('/api/persons/:id',(req,res,next)=>{
+  const updatedObject={
+    name:req.body.name,
+    number:req.body.number
+  }
+  Contact.findByIdAndUpdate(req.params.id,updatedObject,{new:true}).then(response=>{
+    res.json(response)
+  }).catch(error=>next(error))
+})
+
 app.get ('/api/persons/:id',(req,res)=>{
     Contact.findById(req.params.id).then(response=>{
       res.json(response)
@@ -89,7 +99,10 @@ app.get ('/api/persons/:id',(req,res)=>{
     })
 })
 
-const PORT = process.env.PORT||3000
+app.use(unknownEndPoints)
+app.use(errorHandler)
+
+const PORT = process.env.PORT||3002
 app.listen (PORT,()=>{
     console.log(`Server is running on port ${PORT}`)
 })
