@@ -12,6 +12,8 @@ const errorHandler = (error,req,res,next) =>{
   console.error(error.message)
   if (error.name==='CastError') {
     return res.status(400).send({error:'input id is not valid.'})
+  }else if (error.name==='ValidationError'){
+    return res.status(400).send({error:error.message})
   }
 }
 
@@ -49,7 +51,7 @@ const randomID = () => {
   return Math.floor(Math.random()*500)+1
 }
 
-app.post ('/api/persons',(req,res)=>{
+app.post ('/api/persons',(req,res,next)=>{
   const data = req.body
   if (data.name===undefined || data.number===undefined){
     return res.status(400).json({error:'Name or the number is missing.'})
@@ -60,7 +62,7 @@ app.post ('/api/persons',(req,res)=>{
   })
   newContact.save().then(response=>{
     res.json(response)
-  })
+  }).catch(error=>next(error))
 })
 
 app.get ('/api/persons',(req,res)=>{
@@ -84,11 +86,8 @@ app.delete ('/api/persons/:id',(req,res,next)=>{
 })
 
 app.put ('/api/persons/:id',(req,res,next)=>{
-  const updatedObject={
-    name:req.body.name,
-    number:req.body.number
-  }
-  Contact.findByIdAndUpdate(req.params.id,updatedObject,{new:true}).then(response=>{
+  const {name,number}=req.body
+  Contact.findByIdAndUpdate(req.params.id,{name,number},{new:true,runValidators:true,context:'query'}).then(response=>{
     res.json(response)
   }).catch(error=>next(error))
 })
