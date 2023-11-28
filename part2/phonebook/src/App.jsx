@@ -2,7 +2,6 @@ import { useState,useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Persons'
-import axios from 'axios'
 import services from './services/persons'
 import Notification from './components/notification'
 
@@ -76,7 +75,8 @@ const App = () => {
               setNotification(null)
             }, 5000);
           }).catch(error=>{
-            setNotification('An ERROR occured.')
+            console.log(error)
+            setNotification('ERROR,'+error.response.data.error)
             setTimeout(() => {
               setNotification(null)
             }, 3000);
@@ -98,7 +98,8 @@ const App = () => {
         setNotification(null)
       }, 5000);
     }).catch(error=>{
-      setNotification('An ERROR occured, cant add the contact.')
+      console.log(error)
+      setNotification('ERROR,'+error.response.data.error)
       setTimeout(() => {
         setNotification(null)
       }, 3000);
