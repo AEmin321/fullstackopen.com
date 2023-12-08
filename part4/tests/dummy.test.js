@@ -51,7 +51,6 @@ const blogs = [
     }  
   ]
 
-  list_helper.mostBlogs(blogs)
 
 describe ('Dummy', ()=> {
     test('dummy is :',()=> {
@@ -90,5 +89,16 @@ describe('Most Blogs',()=>{
     }
     const maxBlogs = list_helper.mostBlogs(blogs)
     expect(maxBlogs).toEqual(maxAuthor)
+  })
+})
+
+describe('Most Likes',()=>{
+  const mostLike = {
+    author:'Edsger W. Dijkstra',
+    likes:17
+  }
+  test('Author with most Like:',()=>{
+    const findMostLikeAuthor = list_helper.mostLikes(blogs)
+    expect(findMostLikeAuthor).toEqual(mostLike)
   })
 })
