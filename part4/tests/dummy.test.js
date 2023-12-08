@@ -51,6 +51,8 @@ const blogs = [
     }  
   ]
 
+  list_helper.mostBlogs(blogs)
+
 describe ('Dummy', ()=> {
     test('dummy is :',()=> {
         const result = list_helper.dummy([])
@@ -78,4 +80,15 @@ describe('Max',()=>{
         const max = list_helper.fevoriteBlog(blogs)
         expect(max).toEqual(isit)
     })
+})
+
+describe('Most Blogs',()=>{
+  test('Author with most blogs:',()=>{
+    const maxAuthor = {
+      author:'Robert C. Martin',
+      blogs:3
+    }
+    const maxBlogs = list_helper.mostBlogs(blogs)
+    expect(maxBlogs).toEqual(maxAuthor)
+  })
 })
