@@ -36,7 +36,16 @@ beforeEach(async()=>{
 
 test('is data received in json', async ()=> {
     await api.get('/api/blogs').expect(200).expect('Content-Type',/application\/json/)
+    const getBlogs = await Blog.find({})
+    expect(getBlogs.length).toBe(3)
 }, 10000)
+
+test('is id defined',async()=>{
+    const getBlogs = await Blog.find({})
+    const ids = getBlogs.map(item=>item.id)
+    console.log(ids)
+    expect(ids).toBeDefined()
+})
 
 afterAll (async () => {
     await mongoose.connection.close()
