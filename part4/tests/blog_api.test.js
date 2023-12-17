@@ -34,6 +34,18 @@ test('Posting to the database',async()=>{
     expect(getTitles).toContain('yalla')
 })
 
+test('Testing the missing likes',async ()=>{
+    const likeMissing = {
+        title:'yalla',
+        author:'sample author',
+        url:'http:/anythingabouturlgoesherer.com',
+    }
+    await api.post('/api/blogs').send(likeMissing).expect(201).expect('Content-Type',/application\/json/)
+    const getData = await helper.getData()
+    const desiredData = getData[getData.length-1]
+    expect(desiredData.likes).toBe(0)
+})
+
 test('Testing if id is defined',async()=>{
     const getBlogs = await helper.getData()
     const ids = getBlogs.map(item=>item.id)
