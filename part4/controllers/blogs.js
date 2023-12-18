@@ -5,6 +5,12 @@ blogRoutes.get('/', async(request, response) => {
     const blogs = await Blog.find({})
     response.json(blogs)
 })
+
+blogRoutes.delete('/:id',async(request,response)=>{
+    const theId = request.params.id
+    await Blog.findByIdAndDelete(theId)
+    response.status(204).end()
+})
   
 blogRoutes.post('/', async(request, response) => {
     const data = request.body

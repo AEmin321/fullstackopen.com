@@ -2,7 +2,7 @@ const Blog = require('../models/blog')
 
 const initData = [
     {
-        title:'yalla',
+        title:'yallaaaaa',
         author:'sample author',
         url:'http:/anythingabouturlgoesherer.com',
         likes:234

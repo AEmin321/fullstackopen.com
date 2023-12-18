@@ -70,6 +70,19 @@ test('Testing if id is defined',async()=>{
     expect(ids).toBeDefined()
 })
 
+describe('Tests for deletion of and item', ()=>{
+    test('code 204 it works and does not contain the deleted file',async()=>{
+        const dataAtStart = await helper.getData()
+        const itemToDelete = dataAtStart[0]
+        await api.delete(`/api/blogs/${itemToDelete._id}`).expect(204)
+        const dataAtEnd = await helper.getData()
+        const dataTitles = dataAtEnd.map(item=>item.title)
+        
+        expect(dataAtEnd).toHaveLength(helper.initData.length-1)
+        expect(dataTitles).not.toContain(itemToDelete.title)
+    })
+})
+
 afterAll (async () => {
     await mongoose.connection.close()
 }, 10000)
