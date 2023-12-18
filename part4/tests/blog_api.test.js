@@ -46,6 +46,24 @@ test('Testing the missing likes',async ()=>{
     expect(desiredData.likes).toBe(0)
 })
 
+test('Testing missing title', async()=>{
+    const titleMissing = {
+        author:'sample author',
+        url:'http:/anythingabouturlgoesherer.com',
+        likes:2342
+    }
+    await api.post('/api/blogs').send(titleMissing).expect(400)
+},10000)
+
+test('Testing missing url',async()=>{
+    const urlMissing = {
+        title:'yalla',
+        author:'sample author',
+        likes:23
+    }
+    await api.post('/api/blogs').send(urlMissing).expect(400)
+},10000)
+
 test('Testing if id is defined',async()=>{
     const getBlogs = await helper.getData()
     const ids = getBlogs.map(item=>item.id)
