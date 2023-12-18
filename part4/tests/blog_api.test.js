@@ -83,6 +83,22 @@ describe('Tests for deletion of and item', ()=>{
     })
 })
 
+describe('Tests for updating an object',()=>{
+    test('testing if an item updated when put',async()=>{
+        const getDataBeforeUpdate = await helper.getData()
+        const sampleObj = {
+            title:'a',
+            author:'a',
+            url:'a',
+            likes:111
+        }
+        await api.put(`/api/blogs/${getDataBeforeUpdate[0]._id}`).send(sampleObj).expect(200).expect('Content-Type',/application\/json/)
+        const dataAfterUpdate = await helper.getData()
+        expect(dataAfterUpdate[0].likes).toBe(111)
+        expect(dataAfterUpdate[0].title).toEqual('a')
+    })
+})
+
 afterAll (async () => {
     await mongoose.connection.close()
 }, 10000)

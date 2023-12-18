@@ -11,6 +11,18 @@ blogRoutes.delete('/:id',async(request,response)=>{
     await Blog.findByIdAndDelete(theId)
     response.status(204).end()
 })
+
+blogRoutes.put('/:id',async(request,response)=>{
+    const data = request.body
+    const update = {
+        title:data.title,
+        author:data.author,
+        url:data.url,
+        likes:data.likes
+    }
+    const updatedItem = await Blog.findByIdAndUpdate(request.params.id,update,{new:true})
+    response.json(updatedItem)
+})
   
 blogRoutes.post('/', async(request, response) => {
     const data = request.body
