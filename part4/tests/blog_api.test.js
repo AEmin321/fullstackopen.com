@@ -5,6 +5,8 @@ const app = require('../app')
 const api = supertest(app)
 const helper = require('./blog_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 beforeEach(async()=>{
     await Blog.deleteMany({})
@@ -96,6 +98,33 @@ describe('Tests for updating an object',()=>{
         const dataAfterUpdate = await helper.getData()
         expect(dataAfterUpdate[0].likes).toBe(111)
         expect(dataAfterUpdate[0].title).toEqual('a')
+    })
+})
+
+describe('Tests for users router', ()=>{
+    beforeEach(async()=>{
+        await User.deleteMany({})
+        const hashPass = await bcrypt.hash('password',10)
+        const user = new User({
+            username:'root',
+            name:'root',
+            passwordHash:hashPass
+        })
+        await user.save()
+    })
+    test('testing if creating fresh user works', async()=>{
+        const getUsers = await helper.usersInDb()
+        const newUser = {
+            username:'hellooo',
+            name:'motherfucker',
+            password:'hellooo'
+        }
+        await api.post('/api/users').send(newUser).expect(201).expect('Content-Type',/application\/json/)
+        const usersAfter = await helper.usersInDb()
+        const usernames = usersAfter.map(user=>user.username)
+        
+        expect(usersAfter).toHaveLength(getUsers.length+1)
+        expect(usernames).toContain('hellooo')
     })
 })
 
