@@ -126,6 +126,18 @@ describe('Tests for users router', ()=>{
         expect(usersAfter).toHaveLength(getUsers.length+1)
         expect(usernames).toContain('hellooo')
     })
+    test('testing the username uniquness and validation', async()=>{
+        const usersBefore = await helper.usersInDb()
+        const newUser = {
+            username:'root',
+            name:'farketmez',
+            password:'budasikimde'
+        }
+        const result=await api.post('/api/users').send(newUser).expect(400).expect('Content-Type',/application\/json/)
+        expect(result.body.error).toContain('expected `username` to be unique')
+        const usersAfter = await helper.usersInDb()
+        expect(usersAfter).toEqual(usersBefore)
+    })
 })
 
 afterAll (async () => {

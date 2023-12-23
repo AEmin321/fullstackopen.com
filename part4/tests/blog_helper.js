@@ -3,19 +3,19 @@ const User = require('../models/user')
 
 const initData = [
     {
-        title:'yallaaaaa',
+        title:'yessir',
         author:'sample author',
         url:'http:/anythingabouturlgoesherer.com',
         likes:234
     },
     {
-        title:'yalla',
+        title:'bullshit',
         author:'sample author',
         url:'http:/anythingabouturlgoesherer.com',
         likes:234
     },
     {
-        title:'yalla',
+        title:'shit',
         author:'sample author',
         url:'http:/anythingabouturlgoesherer.com',
         likes:234
