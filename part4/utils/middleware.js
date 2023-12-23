@@ -12,6 +12,16 @@ const unknownEndPoint = (req,res) => {
     res.status(404).send({error:'This endpoint does not exist.'})
 }
 
+const tokenExtractor = (request,response,next) => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')){
+        request.token = authorization.replace('Bearer ','')
+    }else {
+        request.token=null
+    }
+    next()
+}
+
 const errorHnadler = (error,req,res,next) => {
     logger.error(error.message)
 
@@ -28,5 +38,5 @@ const errorHnadler = (error,req,res,next) => {
 }
 
 module.exports = {
-    reqLogger,unknownEndPoint,errorHnadler
+    reqLogger,unknownEndPoint,errorHnadler,tokenExtractor
 }
