@@ -11,8 +11,13 @@ blogRoutes.get('/', async(request, response) => {
 
 blogRoutes.delete('/:id',async(request,response)=>{
     const theId = request.params.id
-    await Blog.findByIdAndDelete(theId)
-    response.status(204).end()
+    const decodeToken = await jwt.verify(request.token,process.env.SECRET)
+    const blog = await Blog.findById(theId)
+    if (decodeToken.id.toString()===blog.user.toString()){
+        await Blog.findByIdAndDelete(theId)
+        return response.status(204).end()
+    }
+    response.status(401).json({error:'token invalid'})
 })
 
 blogRoutes.put('/:id',async(request,response)=>{
