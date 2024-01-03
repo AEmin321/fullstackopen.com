@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/notification'
 import BlogForm from './components/BlogForm'
+import Toggle from './components/Toggle'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -90,9 +91,9 @@ const App = () => {
   )
 
   const createBlog = ()=>(
-    <div>
+    <Toggle buttonText='Create New Blog'>
       <BlogForm createBlog={handleCreateBlog} notification={notification}/>
-    </div>
+    </Toggle>
   )
 
   return (
