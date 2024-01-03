@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/notification'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,10 +11,6 @@ const App = () => {
   const [password,setPassword] = useState('')
   const [user,setUser] = useState(null)
   const [notification,setNotification] = useState(null)
-
-  const [title,setTitle] = useState('')
-  const [author,setAuthor] = useState('')
-  const [url,setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,14 +27,8 @@ const App = () => {
     }
   }, [])
 
-  const handleCreateBlog = async(event)=> {
-    event.preventDefault()
+  const handleCreateBlog = async(newBlog)=> {
     try {
-      const newBlog = {
-        title:title,
-        author:author,
-        url:url
-      }
       const response = await blogService.create(newBlog)
       setBlogs(blogs.concat(response))
 
@@ -51,9 +42,6 @@ const App = () => {
         setNotification(null)
       }, 5000);
     }
-    setTitle('')
-    setAuthor('')
-    setUrl('')
   }
 
   const handleLogin = async (event)=>{
@@ -102,14 +90,9 @@ const App = () => {
   )
 
   const createBlog = ()=>(
-    <form onSubmit={handleCreateBlog}>
-      <Notification message={notification}/>
-      <h2>Create new Blog</h2>
-      <div><label htmlFor="Title">Title:<input type="text" value={title} onChange={({target})=>setTitle(target.value)}/></label></div>
-      <div><label htmlFor="Author">Author:<input type="text" value={author} onChange={({target})=>setAuthor(target.value)}/></label></div>
-      <div><label htmlFor="Url">URL:<input type="text" value={url} onChange={({target})=>setUrl(target.value)}/></label></div>
-      <button type='submit'>Save</button>
-    </form>
+    <div>
+      <BlogForm createBlog={handleCreateBlog} notification={notification}/>
+    </div>
   )
 
   return (
