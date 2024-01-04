@@ -67,6 +67,14 @@ const App = () => {
     setUser(null)
   }
 
+  const updateLike = async(id) => {
+    const blog = blogs.find(blog=>blog._id===id)
+    console.log(blog)
+    const updatedBlog = {...blog , likes: blog.likes + 1}
+    const response = await blogService.updateLike(id,updatedBlog)
+    setBlogs(blogs.map(blog=>blog._id!==id ? blog : response))
+  }
+
   const login = () => (
     <div>
       <h2>login to application</h2>
@@ -85,7 +93,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog._id} blog={blog} handleLike={()=>updateLike(blog._id)}/>
       )}
     </div>
   )
@@ -99,7 +107,7 @@ const App = () => {
   return (
     <div>
       {!user && login()}
-      {user && <div><p>{user.name} is logged in</p><div>{createBlog()}</div>{renderBlogs()} <button onClick={handleLogout}>logout</button></div>}
+      {user && <div><p>{user.name} is logged in <button onClick={handleLogout}>logout</button></p><div>{createBlog()}</div>{renderBlogs()} </div>}
     </div>
   )
 }
