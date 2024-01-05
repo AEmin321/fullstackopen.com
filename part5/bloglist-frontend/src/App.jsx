@@ -75,6 +75,25 @@ const App = () => {
     setBlogs(blogs.map(blog=>blog._id!==id ? blog : response))
   }
 
+  const handleDelete = async(id) => {
+    const blog = blogs.find(item=>item._id===id)
+    if (window.confirm(`Do you want to remove ${blog.title} ?`)) {
+      try {
+        await blogService.deleteBlog(id)
+        setBlogs(blogs.filter(item=>item._id!==id))
+        setNotification(`${blog.title} deleted successfully`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000);
+      } catch (error) {
+        setNotification('blog already deleted.')
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000);
+      }
+    }
+  }
+
   const login = () => (
     <div>
       <h2>login to application</h2>
@@ -93,7 +112,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       {blogs.sort((a,b)=>b.likes-a.likes).map(blog =>
-        <Blog key={blog._id} blog={blog} handleLike={()=>updateLike(blog._id)}/>
+        <Blog key={blog._id} blog={blog} handleLike={()=>updateLike(blog._id)} user={user} handleDelete={()=>handleDelete(blog._id)}/>
       )}
     </div>
   )
