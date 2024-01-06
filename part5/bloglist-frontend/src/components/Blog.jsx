@@ -18,7 +18,7 @@ const Blog = ({ blog , handleLike, user, handleDelete }) => {
       <div className='defaultBlog'>
         {blog.title} - {blog.author} <button onClick={() => setVisible(!visible)}>{visible?'View':'Hide'}</button>
       </div>
-      <div style={toggleDisplay}>
+      <div style={toggleDisplay} className='viewBlog'>
         <br/>
         <div>{blog.url}</div>
         <div>{blog.likes} <button onClick={handleLike}>like</button></div>

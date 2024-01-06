@@ -1,11 +1,11 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 
-
-test('testing for author and title',() => {
+describe('<Blog /> Tests',() => {
   const blog = {
     title:'sampleblog',
     author:'mahmut',
@@ -16,8 +16,23 @@ test('testing for author and title',() => {
     name:'random',
     username:'random2'
   }
+  let container
 
-  render(<Blog blog={blog} user={user}/>)
-  const renderedText = screen.getByText('sampleblog - mahmut')
-  expect(renderedText).toBeDefined()
+  beforeEach(() => {
+    container = render(<Blog blog={blog} user={user} />).container
+  })
+
+  test('At the start it only shows author and title.',() => {
+    const defaultBlog = container.querySelector('.defaultBlog')
+    expect(defaultBlog).not.toHaveStyle('display:none')
+  })
+
+  test('After clicking the view show all the info.', async() => {
+    const user = userEvent.setup()
+    const button = screen.getByText('View')
+    await user.click(button)
+
+    const viewBlog = container.querySelector('.viewBlog')
+    expect(viewBlog).not.toHaveStyle('display:none')
+  })
 })
