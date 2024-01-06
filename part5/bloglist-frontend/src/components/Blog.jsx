@@ -15,8 +15,8 @@ const Blog = ({ blog , handleLike, user, handleDelete }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
-        {blog.title} <button onClick={() => setVisible(!visible)}>{visible?'View':'Hide'}</button>
+      <div className='defaultBlog'>
+        {blog.title} - {blog.author} <button onClick={() => setVisible(!visible)}>{visible?'View':'Hide'}</button>
       </div>
       <div style={toggleDisplay}>
         <br/>
