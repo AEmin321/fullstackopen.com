@@ -3,6 +3,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
 
 const blog = {
   title:'sampleblog',
@@ -47,4 +48,28 @@ test('Clicking the like button increases the like and calls event handler', asyn
   await user.click(button)
 
   expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+test('<BlogForm /> testing', async() => {
+  const createBlog = jest.fn()
+  const user = userEvent.setup()
+
+  render(<BlogForm createBlog={createBlog} notification={'just a notification'} />)
+
+  const title = screen.getByPlaceholderText('title')
+  const authorInput = screen.getByPlaceholderText('author')
+  const urlInput = screen.getByPlaceholderText('url')
+  const saveButton = screen.getByText('Save')
+
+  await user.type(title, 'thetitle')
+  await user.type(authorInput,'theauthor')
+  await user.type(urlInput,'theurl')
+  await user.click(saveButton)
+
+  expect(createBlog).toHaveBeenCalledTimes(1)
+  expect(createBlog).toHaveBeenCalledWith({
+    title: 'thetitle',
+    author: 'theauthor',
+    url: 'theurl',
+  })
 })
