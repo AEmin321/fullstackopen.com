@@ -48,5 +48,23 @@ describe('Blog App', function(){
 
       cy.contains('sample title')
     })
+
+    describe('When a new blog created', function(){
+      beforeEach(function(){
+        cy.contains('Create New Blog').click()
+        cy.get('input[placeholder="title"]').type('sample title')
+        cy.get('input[placeholder="author"]').type('sample author')
+        cy.get('input[placeholder="url"]').type('thisistheurlprovided')
+        cy.contains('Save').click()
+
+        cy.contains('sample title')
+      })
+      it('Users can like a blog', function(){
+        cy.contains('View').click()
+        cy.contains('0')
+        cy.contains('like').click()
+        cy.contains('1')
+      })
+    })
   })
 })
