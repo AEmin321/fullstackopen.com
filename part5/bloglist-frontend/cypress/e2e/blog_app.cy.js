@@ -49,17 +49,25 @@ describe('Blog App', function(){
     describe('When a new blog created', function(){
       beforeEach(function(){
         cy.createBlog({ title:'sampletitle',author:'testAuthor',url:'https/theurlyouarelookingfor' })
+        cy.createBlog({ title:'newmooonn',author:'testWrong',url:'https/theurlyouarelookingfor' })
+        cy.createBlog({ title:'secondtitle',author:'testAuthor',url:'https/theurlyouarelookingfor' })
       })
       it('Users can like a blog', function(){
-        cy.contains('View').click()
-        cy.contains('0')
-        cy.contains('like').click()
-        cy.contains('1')
+        cy.contains('secondtitle').parent().contains('View').click()
+        cy.contains('secondtitle').parent().contains('0')
+        cy.contains('secondtitle').parent().contains('like').click()
+        cy.contains('secondtitle').parent().contains('1')
       })
-      it('Blog can deleted by the user who created', function(){
-        cy.contains('View').click()
-        cy.contains('Remove').click()
-        cy.contains('View').should('not.exist')
+      it('Blog can be deleted by the user who created', function(){
+        cy.contains('sampletitle').parent().contains('View').click()
+        cy.contains('sampletitle').parent().contains('Remove').click().should('not.exist')
+      })
+      it('Only user who created blog can see remove button', function(){
+        cy.contains('sampletitle').parent().contains('View').click()
+        cy.contains('sampletitle').parent().contains('Remove')
+
+        cy.contains('newmooonn').parent().contains('View').click()
+        cy.contains('newmooonn').parent().contains('Remove').should('not.exist')
       })
     })
   })
