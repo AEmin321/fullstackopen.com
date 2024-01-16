@@ -69,6 +69,20 @@ describe('Blog App', function(){
         cy.contains('newmooonn').parent().contains('View').click()
         cy.contains('newmooonn').parent().contains('Remove').should('not.exist')
       })
+      it('Checking if blogs ordered according to likes', function(){
+        cy.contains('sampletitle').parent().contains('View').click()
+        cy.contains('sampletitle').parent().contains('like').click().wait(1000).click().wait(1000).click()
+
+        cy.contains('newmooonn').parent().contains('View').click()
+        cy.contains('newmooonn').parent().contains('like').click().wait(1000).click().wait(1000).click().wait(1000).click()
+
+        cy.contains('secondtitle').parent().contains('View').click()
+        cy.contains('secondtitle').parent().contains('like').click()
+
+        cy.get('.blogCard').eq(0).should('contain', 'newmooonn')
+        cy.get('.blogCard').eq(1).should('contain', 'sampletitle')
+        cy.get('.blogCard').eq(2).should('contain', 'secondtitle')
+      })
     })
   })
 })
