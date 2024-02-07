@@ -4,14 +4,13 @@ import { useDispatch } from 'react-redux'
 import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
 import Notification from './components/Notification'
-import anecdoteService from './services/anecdotes'
-import { setInitialNotes } from './reducers/anecdoteReducer'
+import { initilizeAnecdotes } from './reducers/anecdoteReducer'
 
 
 const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    anecdoteService.getAnecdotes().then(anecdotes=>dispatch(setInitialNotes(anecdotes)))
+    dispatch(initilizeAnecdotes())
   }, [])
   
   return (
