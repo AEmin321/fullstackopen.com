@@ -11,6 +11,12 @@ const AnecdoteForm = () => {
     onSuccess: (createdAnecdote)=>{
       const anecdotes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'],anecdotes.concat(createdAnecdote))
+    },
+    onError: ()=>{
+      dispatch({type:'ADD_NOTIFICATION',payload:'Too short, your anecdote should be atleast 5 characters long.'})
+      setTimeout(() => {
+        dispatch({type:'REMOVE_NOTIFICATION'})
+      }, 5000);
     }
   })
 
