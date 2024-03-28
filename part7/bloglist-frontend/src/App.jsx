@@ -15,6 +15,7 @@ import {
   appendBlog,
   updateLike,
   removeBlog,
+  addBlog,
 } from "./slices/blogsSlice";
 
 const App = () => {
@@ -43,23 +44,8 @@ const App = () => {
 
   const blogs = useSelector((state) => state.blogs);
 
-  const handleCreateBlog = async (newBlog) => {
-    try {
-      const response = await blogService.create(newBlog);
-      dispatch(appendBlog(response));
-
-      dispatch(addNotification(`${response.title} Added to the blog list.`));
-      setTimeout(() => {
-        dispatch(
-          removeNotification(`${response.title} Added to the blog list.`)
-        );
-      }, 5000);
-    } catch (error) {
-      dispatch(addNotification("An Error accured."));
-      setTimeout(() => {
-        dispatch(removeNotification("An Error accured."));
-      }, 5000);
-    }
+  const handleCreateBlog = (newBlog) => {
+    dispatch(addBlog(newBlog));
   };
 
   const handleLogin = async (event) => {

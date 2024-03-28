@@ -57,4 +57,21 @@ export const removeBlog = (id) => {
     }
   };
 };
+export const addBlog = (newBlog) => {
+  return async (dispatch) => {
+    try {
+      const res = await blogService.create(newBlog);
+      dispatch(appendBlog(res));
+      dispatch(addNotification(`${res.title} Added to the blog list.`));
+      setTimeout(() => {
+        dispatch(removeNotification(`${res.title} Added to the blog list.`));
+      }, 5000);
+    } catch (error) {
+      dispatch(addNotification("An Error accured."));
+      setTimeout(() => {
+        dispatch(removeNotification("An Error accured."));
+      }, 5000);
+    }
+  };
+};
 export default blogsSlice.reducer;
