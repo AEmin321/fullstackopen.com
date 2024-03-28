@@ -9,17 +9,17 @@ import {
   addNotification,
   removeNotification,
 } from "./slices/notificationSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setBlogs, appendBlog } from "./slices/blogsSlice";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => dispatch(setBlogs(blogs)));
 
     const loggedUserJson = window.localStorage.getItem("loggedUser");
     if (loggedUserJson) {
@@ -36,10 +36,12 @@ const App = () => {
     }
   }, []);
 
+  const blogs = useSelector((state) => state.blogs);
+
   const handleCreateBlog = async (newBlog) => {
     try {
       const response = await blogService.create(newBlog);
-      setBlogs(blogs.concat(response));
+      dispatch(appendBlog(response));
 
       dispatch(addNotification(`${response.title} Added to the blog list.`));
       setTimeout(() => {
@@ -85,7 +87,9 @@ const App = () => {
     console.log(blog);
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
     const response = await blogService.updateLike(id, updatedBlog);
-    setBlogs(blogs.map((blog) => (blog._id !== id ? blog : response)));
+    dispatch(
+      setBlogs(blogs.map((blog) => (blog._id !== id ? blog : response)))
+    );
   };
 
   const handleDelete = async (id) => {
@@ -93,7 +97,7 @@ const App = () => {
     if (window.confirm(`Do you want to remove ${blog.title} ?`)) {
       try {
         await blogService.deleteBlog(id);
-        setBlogs(blogs.filter((item) => item._id !== id));
+        dispatch(setBlogs(blogs.filter((item) => item._id !== id)));
         dispatch(addNotification(`${blog.title} deleted successfully`));
         setTimeout(() => {
           dispatch(removeNotification(`${blog.title} deleted successfully`));
@@ -136,17 +140,18 @@ const App = () => {
   const renderBlogs = () => (
     <div>
       <h2>Blogs</h2>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog
-            key={blog._id}
-            blog={blog}
-            handleLike={() => updateLike(blog._id)}
-            user={user}
-            handleDelete={() => handleDelete(blog._id)}
-          />
-        ))}
+      {blogs &&
+        [...blogs]
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              key={blog._id}
+              blog={blog}
+              handleLike={() => updateLike(blog._id)}
+              user={user}
+              handleDelete={() => handleDelete(blog._id)}
+            />
+          ))}
     </div>
   );
 
