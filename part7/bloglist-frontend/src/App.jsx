@@ -10,18 +10,12 @@ import {
   removeNotification,
 } from "./slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setBlogs,
-  appendBlog,
-  updateLike,
-  removeBlog,
-  addBlog,
-} from "./slices/blogsSlice";
+import { setBlogs, updateLike, removeBlog, addBlog } from "./slices/blogsSlice";
+import { logIn, logOut, setUser } from "./slices/userSlice";
 
 const App = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +24,7 @@ const App = () => {
     const loggedUserJson = window.localStorage.getItem("loggedUser");
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson);
-      setUser(user);
+      dispatch(setUser(user));
       console.log(user);
       blogService.setToken(user.token);
       dispatch(addNotification(`You are now signed in as ${user.username}`));
@@ -43,6 +37,7 @@ const App = () => {
   }, []);
 
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user.user);
 
   const handleCreateBlog = (newBlog) => {
     dispatch(addBlog(newBlog));
@@ -50,27 +45,9 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const user = await loginService.login({
-        username: username,
-        password: password,
-      });
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUserName("");
-      setPassword("");
-      setUser(user);
-    } catch (error) {
-      dispatch(addNotification("Wrong user name or password. try again"));
-      setTimeout(() => {
-        dispatch(removeNotification("Wrong user name or password. try again"));
-      }, 5000);
-    }
-  };
-
-  const handleLogout = (event) => {
-    window.localStorage.removeItem("loggedUser");
-    setUser(null);
+    dispatch(logIn({ username: username, password: password }));
+    setUserName("");
+    setPassword("");
   };
 
   const login = () => (
@@ -131,7 +108,7 @@ const App = () => {
         <div>
           <p>
             {user.name} is logged in{" "}
-            <button onClick={handleLogout}>logout</button>
+            <button onClick={() => dispatch(logOut())}>logout</button>
           </p>
           <div>{createBlog()}</div>
           {renderBlogs()}{" "}
