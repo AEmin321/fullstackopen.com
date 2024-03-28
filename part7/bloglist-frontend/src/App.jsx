@@ -10,7 +10,7 @@ import {
   removeNotification,
 } from "./slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs, appendBlog } from "./slices/blogsSlice";
+import { setBlogs, appendBlog, updateLike } from "./slices/blogsSlice";
 
 const App = () => {
   const [username, setUserName] = useState("");
@@ -82,14 +82,12 @@ const App = () => {
     setUser(null);
   };
 
-  const updateLike = async (id) => {
-    const blog = blogs.find((blog) => blog._id === id);
-    console.log(blog);
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    const response = await blogService.updateLike(id, updatedBlog);
-    dispatch(
-      setBlogs(blogs.map((blog) => (blog._id !== id ? blog : response)))
-    );
+  const handleLike = (id) => {
+    // const blog = blogs.find((blog) => blog._id === id);
+    // console.log(blog);
+    // const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    // const response = await blogService.updateLike(id, updatedBlog);
+    dispatch(updateLike(id));
   };
 
   const handleDelete = async (id) => {
@@ -147,7 +145,7 @@ const App = () => {
             <Blog
               key={blog._id}
               blog={blog}
-              handleLike={() => updateLike(blog._id)}
+              handleLike={() => handleLike(blog._id)}
               user={user}
               handleDelete={() => handleDelete(blog._id)}
             />
