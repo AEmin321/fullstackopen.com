@@ -10,7 +10,12 @@ import {
   removeNotification,
 } from "./slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs, appendBlog, updateLike } from "./slices/blogsSlice";
+import {
+  setBlogs,
+  appendBlog,
+  updateLike,
+  removeBlog,
+} from "./slices/blogsSlice";
 
 const App = () => {
   const [username, setUserName] = useState("");
@@ -82,33 +87,6 @@ const App = () => {
     setUser(null);
   };
 
-  const handleLike = (id) => {
-    // const blog = blogs.find((blog) => blog._id === id);
-    // console.log(blog);
-    // const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    // const response = await blogService.updateLike(id, updatedBlog);
-    dispatch(updateLike(id));
-  };
-
-  const handleDelete = async (id) => {
-    const blog = blogs.find((item) => item._id === id);
-    if (window.confirm(`Do you want to remove ${blog.title} ?`)) {
-      try {
-        await blogService.deleteBlog(id);
-        dispatch(setBlogs(blogs.filter((item) => item._id !== id)));
-        dispatch(addNotification(`${blog.title} deleted successfully`));
-        setTimeout(() => {
-          dispatch(removeNotification(`${blog.title} deleted successfully`));
-        }, 5000);
-      } catch (error) {
-        dispatch(addNotification("blog already deleted."));
-        setTimeout(() => {
-          dispatch(removeNotification("blog already deleted."));
-        }, 5000);
-      }
-    }
-  };
-
   const login = () => (
     <div>
       <h2>login to application</h2>
@@ -145,9 +123,9 @@ const App = () => {
             <Blog
               key={blog._id}
               blog={blog}
-              handleLike={() => handleLike(blog._id)}
+              handleLike={() => dispatch(updateLike(blog._id))}
               user={user}
-              handleDelete={() => handleDelete(blog._id)}
+              handleDelete={() => dispatch(removeBlog(blog._id))}
             />
           ))}
     </div>
