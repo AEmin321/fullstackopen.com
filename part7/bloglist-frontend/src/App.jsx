@@ -7,12 +7,12 @@ import {
   removeNotification,
 } from "./slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs, addBlog } from "./slices/blogsSlice";
+import { setBlogs } from "./slices/blogsSlice";
 import { logOut, setUser } from "./slices/userSlice";
 import Login from "./components/Login";
 import RenderBlogs from "./components/RenderBlogs";
-import CreateBlog from "./components/CreateBlog";
 import Users from "./components/Users";
+import UserBlogs from "./components/UserBlogs";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ const App = () => {
               <button onClick={() => dispatch(logOut())}>logout</button>
             </p>
             <Routes>
+              <Route path="/users/:id" element={<UserBlogs />} />
               <Route path="/" element={<RenderBlogs />} />
               <Route path="/users" element={<Users />} />
             </Routes>
