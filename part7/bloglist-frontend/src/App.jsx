@@ -1,21 +1,18 @@
-import { useState, useEffect } from "react";
-import Blog from "./components/Blog";
+import { useEffect } from "react";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/notification";
-import BlogForm from "./components/BlogForm";
-import Toggle from "./components/Toggle";
 import {
   addNotification,
   removeNotification,
 } from "./slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs, updateLike, removeBlog, addBlog } from "./slices/blogsSlice";
-import { logIn, logOut, setUser } from "./slices/userSlice";
+import { setBlogs, addBlog } from "./slices/blogsSlice";
+import { logOut, setUser } from "./slices/userSlice";
+import Login from "./components/Login";
+import RenderBlogs from "./components/RenderBlogs";
+import CreateBlog from "./components/CreateBlog";
 
 const App = () => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,82 +33,20 @@ const App = () => {
     }
   }, []);
 
-  const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user.user);
-
-  const handleCreateBlog = (newBlog) => {
-    dispatch(addBlog(newBlog));
-  };
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    dispatch(logIn({ username: username, password: password }));
-    setUserName("");
-    setPassword("");
-  };
-
-  const login = () => (
-    <div>
-      <h2>login to application</h2>
-      <form onSubmit={handleLogin}>
-        <label htmlFor="Username">Username:</label>
-        <input
-          type="text"
-          name="Username"
-          value={username}
-          onChange={({ target }) => setUserName(target.value)}
-        />
-        <br />
-        <label htmlFor="Password">Password:</label>
-        <input
-          type="password"
-          name="Password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-    </div>
-  );
-
-  const renderBlogs = () => (
-    <div>
-      <h2>Blogs</h2>
-      {blogs &&
-        [...blogs]
-          .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
-            <Blog
-              key={blog._id}
-              blog={blog}
-              handleLike={() => dispatch(updateLike(blog._id))}
-              user={user}
-              handleDelete={() => dispatch(removeBlog(blog._id))}
-            />
-          ))}
-    </div>
-  );
-
-  const createBlog = () => (
-    <Toggle buttonText="Create New Blog">
-      <BlogForm createBlog={handleCreateBlog} />
-    </Toggle>
-  );
 
   return (
     <div>
       <Notification />
-      {!user && login()}
+      {!user && <Login />}
       {user && (
         <div>
           <p>
             {user.name} is logged in{" "}
             <button onClick={() => dispatch(logOut())}>logout</button>
           </p>
-          <div>{createBlog()}</div>
-          {renderBlogs()}{" "}
+          <CreateBlog />
+          <RenderBlogs />
         </div>
       )}
     </div>

@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addBlog } from "../slices/blogsSlice";
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const addBlog = (event) => {
+  const dispatch = useDispatch();
+
+  const addToBlog = (event) => {
     event.preventDefault();
-    createBlog({ title: title, author: author, url: url });
+    dispatch(addBlog({ title: title, author: author, url: url }));
     setTitle("");
     setAuthor("");
     setUrl("");
@@ -15,7 +19,7 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <div>
-      <form onSubmit={addBlog}>
+      <form onSubmit={addToBlog}>
         <h2>Create new Blog</h2>
         <div>
           <label htmlFor="Title">
