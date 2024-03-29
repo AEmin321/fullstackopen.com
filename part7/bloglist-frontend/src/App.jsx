@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import blogService from "./services/blogs";
 import Notification from "./components/notification";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import {
   addNotification,
   removeNotification,
@@ -14,6 +20,7 @@ import RenderBlogs from "./components/RenderBlogs";
 import Users from "./components/Users";
 import UserBlogs from "./components/UserBlogs";
 import Blog from "./components/Blog";
+import Nav from "./components/Nav";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,7 +32,6 @@ const App = () => {
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson);
       dispatch(setUser(user));
-      console.log(user);
       blogService.setToken(user.token);
       dispatch(addNotification(`You are now signed in as ${user.username}`));
       setTimeout(() => {
@@ -40,24 +46,18 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <Notification />
-        {!user && <Login />}
-        {user && (
-          <div>
-            <p>
-              {user.name} is logged in{" "}
-              <button onClick={() => dispatch(logOut())}>logout</button>
-            </p>
-            <Routes>
-              <Route path="/users/:id" element={<UserBlogs />} />
-              <Route path="/blogs/:id" element={<Blog user={user} />} />
-              <Route path="/" element={<RenderBlogs />} />
-              <Route path="/users" element={<Users />} />
-            </Routes>
-          </div>
-        )}
-      </div>
+      <Notification />
+      <Nav />
+      {!user && <Login />}
+      {user && (
+        <Routes>
+          <Route path="/users/:id" element={<UserBlogs />} />
+          <Route path="/blogs/:id" element={<Blog user={user} />} />
+          <Route path="/" element={<RenderBlogs />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/blogs" element={<UserBlogs />} />
+        </Routes>
+      )}
     </Router>
   );
 };

@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logIn } from "../slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     dispatch(logIn({ username: username, password: password }));
     setUserName("");
     setPassword("");
+    navigate("/");
   };
   return (
     <div>

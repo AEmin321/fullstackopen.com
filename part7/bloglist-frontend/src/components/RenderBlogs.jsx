@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 
 const RenderBlogs = () => {
   const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
 
   return (
     <div>

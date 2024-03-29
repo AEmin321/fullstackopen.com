@@ -26,7 +26,7 @@ export const logIn = (credential) => {
     try {
       const user = await loginService.login(credential);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      blogService.setToken(user);
+      blogService.setToken(user.token);
       dispatch(setUser(user));
     } catch (error) {
       dispatch(addNotification("Wrong user name or password. try again"));
