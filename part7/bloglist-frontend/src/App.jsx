@@ -13,6 +13,7 @@ import Login from "./components/Login";
 import RenderBlogs from "./components/RenderBlogs";
 import Users from "./components/Users";
 import UserBlogs from "./components/UserBlogs";
+import Blog from "./components/Blog";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const App = () => {
             </p>
             <Routes>
               <Route path="/users/:id" element={<UserBlogs />} />
+              <Route path="/blogs/:id" element={<Blog user={user} />} />
               <Route path="/" element={<RenderBlogs />} />
               <Route path="/users" element={<Users />} />
             </Routes>

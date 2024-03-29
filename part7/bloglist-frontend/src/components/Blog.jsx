@@ -1,41 +1,36 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeBlog, updateLike } from "../slices/blogsSlice";
+import { useParams } from "react-router-dom";
 
-const Blog = ({ blog, handleLike, user, handleDelete }) => {
-  const [visible, setVisible] = useState(true);
+const Blog = ({ user }) => {
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
+  const id = useParams().id;
 
-  const toggleDisplay = { display: visible ? "none" : "" };
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+  const blog = blogs.find((item) => item._id === id);
+  if (!blog) {
+    return null;
+  }
 
   return (
-    <div className="blogCard" style={blogStyle}>
+    <div className="blogCard">
       <div className="defaultBlog">
-        {blog.title} - {blog.author}{" "}
-        <button onClick={() => setVisible(!visible)}>
-          {visible ? "View" : "Hide"}
-        </button>
-      </div>
-      <div style={toggleDisplay} className="viewBlog">
-        <br />
+        <h1>
+          {blog.title} - {blog.author}
+        </h1>
         <div>{blog.url}</div>
         <div>
-          {blog.likes} <button onClick={handleLike}>like</button>
+          {blog.likes}{" "}
+          <button onClick={() => dispatch(updateLike(id))}>like</button>
         </div>
         <div>{blog.author}</div>
         {user.name === blog.author ? (
-          <button id="remove-btn" onClick={handleDelete}>
+          <button id="remove-btn" onClick={() => dispatch(removeBlog(id))}>
             Remove
           </button>
         ) : (
           ""
         )}
-        <br />
       </div>
     </div>
   );
