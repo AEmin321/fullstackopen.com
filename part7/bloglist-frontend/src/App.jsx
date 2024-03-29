@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import blogService from "./services/blogs";
 import Notification from "./components/notification";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import {
   addNotification,
   removeNotification,
@@ -11,6 +12,7 @@ import { logOut, setUser } from "./slices/userSlice";
 import Login from "./components/Login";
 import RenderBlogs from "./components/RenderBlogs";
 import CreateBlog from "./components/CreateBlog";
+import Users from "./components/Users";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,20 +38,24 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
 
   return (
-    <div>
-      <Notification />
-      {!user && <Login />}
-      {user && (
-        <div>
-          <p>
-            {user.name} is logged in{" "}
-            <button onClick={() => dispatch(logOut())}>logout</button>
-          </p>
-          <CreateBlog />
-          <RenderBlogs />
-        </div>
-      )}
-    </div>
+    <Router>
+      <div>
+        <Notification />
+        {!user && <Login />}
+        {user && (
+          <div>
+            <p>
+              {user.name} is logged in{" "}
+              <button onClick={() => dispatch(logOut())}>logout</button>
+            </p>
+            <Routes>
+              <Route path="/" element={<RenderBlogs />} />
+              <Route path="/users" element={<Users />} />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </Router>
   );
 };
 

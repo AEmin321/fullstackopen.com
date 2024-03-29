@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Blog from "./Blog";
 import { updateLike, removeBlog } from "../slices/blogsSlice";
+import CreateBlog from "./CreateBlog";
 
 const RenderBlogs = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -10,6 +11,7 @@ const RenderBlogs = () => {
 
   return (
     <div>
+      <CreateBlog />
       <h2>Blogs</h2>
       {blogs &&
         [...blogs]
