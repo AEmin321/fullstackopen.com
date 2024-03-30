@@ -52,7 +52,7 @@ const RenderBlogs = () => {
         onClose={() => setOpen(false)}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar elevation={0} sx={{ position: "relative" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -65,13 +65,6 @@ const RenderBlogs = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cteate New Blog
             </Typography>
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={() => console.log("gonna save something")}
-            >
-              save
-            </Button>
           </Toolbar>
         </AppBar>
         <BlogForm />

@@ -1,62 +1,76 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addBlog } from "../slices/blogsSlice";
+import { useSelector } from "react-redux";
+
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const BlogForm = () => {
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const user = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
 
   const addToBlog = (event) => {
     event.preventDefault();
-    dispatch(addBlog({ title: title, author: author, url: url }));
+    dispatch(addBlog({ title: title, author: user.name, url: url }));
     setTitle("");
-    setAuthor("");
     setUrl("");
   };
 
   return (
-    <div>
+    <Container>
       <form onSubmit={addToBlog}>
-        <h2>Create new Blog</h2>
         <div>
-          <label htmlFor="Title">
-            Title:
-            <input
-              placeholder="title"
-              type="text"
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </label>
+          <TextField
+            fullWidth
+            id="standard-multiline-flexible"
+            label="Title"
+            value={title}
+            multiline
+            maxRows={4}
+            variant="standard"
+            onChange={({ target }) => setTitle(target.value)}
+            margin="normal"
+          />
         </div>
         <div>
-          <label htmlFor="Author">
-            Author:
-            <input
-              placeholder="author"
-              type="text"
-              value={author}
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </label>
+          <TextField
+            fullWidth
+            id="standard-multiline-flexible"
+            label="Author"
+            multiline
+            maxRows={4}
+            variant="standard"
+            value={user.name}
+            margin="normal"
+            disabled
+          />
         </div>
         <div>
-          <label htmlFor="Url">
-            URL:
-            <input
-              placeholder="url"
-              type="text"
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </label>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="standard-multiline-static"
+            label="URL"
+            multiline
+            rows={4}
+            variant="standard"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
         </div>
-        <button type="submit">Save</button>
+        <Box my="1rem">
+          <Button type="submit" variant="contained" fullWidth disableElevation>
+            Save
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Container>
   );
 };
 

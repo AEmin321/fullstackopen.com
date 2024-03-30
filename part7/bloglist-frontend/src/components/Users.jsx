@@ -1,6 +1,17 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+
 const Users = () => {
   const data = useSelector((state) => state.blogs);
 
@@ -17,27 +28,40 @@ const Users = () => {
   }, {});
 
   return (
-    <div>
-      <h2>Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Blogs Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(userBlogCounts).map(([user, { id, count }]) => (
-            <tr key={id}>
-              <td>
-                <Link to={`/users/${id}`}>{user}</Link>
-              </td>
-              <td>{count}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Container>
+      <Typography m="1.4rem 0 1rem 0" variant="h3" gutterBottom>
+        Users
+      </Typography>
+      <Divider />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>User</TableCell>
+              <TableCell align="right">Blogs</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Object.entries(userBlogCounts).map(([user, { id, count }]) => (
+              <TableRow
+                key={id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <Link
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    to={`/users/${id}`}
+                  >
+                    {user}
+                  </Link>
+                </TableCell>
+                <TableCell align="right">{count}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 
