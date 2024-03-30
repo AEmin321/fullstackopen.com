@@ -93,17 +93,23 @@ const Nav = () => {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/">Home</Link>
+                  <Link style={{ textDecoration: "none" }} to="/">
+                    Home
+                  </Link>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/users">Users</Link>
+                  <Link style={{ textDecoration: "none" }} to="/users">
+                    Users
+                  </Link>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/blogs">Blogs</Link>
+                  <Link style={{ textDecoration: "none" }} to="/blogs">
+                    Blogs
+                  </Link>
                 </Typography>
               </MenuItem>
             </Menu>
@@ -128,7 +134,7 @@ const Nav = () => {
             HBlog
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link to="/">
+            <Link style={{ textDecoration: "none" }} to="/">
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -137,7 +143,7 @@ const Nav = () => {
               </Button>
             </Link>
 
-            <Link to="/users">
+            <Link style={{ textDecoration: "none" }} to="/users">
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -146,7 +152,7 @@ const Nav = () => {
               </Button>
             </Link>
 
-            <Link to="/blogs">
+            <Link style={{ textDecoration: "none" }} to="/blogs">
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
