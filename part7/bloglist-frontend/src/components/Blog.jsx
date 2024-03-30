@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeBlog, updateLike } from "../slices/blogsSlice";
+import { removeBlog, updateLike, addComment } from "../slices/blogsSlice";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const Blog = ({ user }) => {
+  const [comment, setComment] = useState("");
+
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
   const id = useParams().id;
@@ -32,6 +35,15 @@ const Blog = ({ user }) => {
           ""
         )}
         <h3>Comments</h3>
+        <div>
+          <input
+            type="text"
+            onChange={(event) => setComment(event.target.value)}
+          />
+          <button onClick={() => dispatch(addComment(id, { text: comment }))}>
+            Add Comment
+          </button>
+        </div>
         <ul>
           {blog.comments.map((comment) => (
             <li key={comment._id}>{comment.text}</li>
