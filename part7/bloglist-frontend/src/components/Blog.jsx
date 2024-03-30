@@ -18,7 +18,7 @@ const Blog = ({ user }) => {
         <h1>
           {blog.title} - {blog.author}
         </h1>
-        <div>{blog.url}</div>
+        <h3>{blog.url}</h3>
         <div>
           {blog.likes}{" "}
           <button onClick={() => dispatch(updateLike(id))}>like</button>
@@ -31,6 +31,12 @@ const Blog = ({ user }) => {
         ) : (
           ""
         )}
+        <h3>Comments</h3>
+        <ul>
+          {blog.comments.map((comment) => (
+            <li key={comment._id}>{comment.text}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
