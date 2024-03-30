@@ -45,6 +45,20 @@ blogRoutes.put("/:id", middleware.userExptractor, async (request, response) => {
   response.json(updatedItem);
 });
 
+blogRoutes.post("/:id/comments", async (request, response) => {
+  const { text } = request.body;
+  const theId = request.params.id;
+
+  const blog = await Blog.findById(theId);
+  console.log(blog);
+  if (!blog) {
+    return response.status(404).json({ error: "Blog post not found" });
+  }
+  blog.comments.push({ text: text });
+  await blog.save();
+  response.status(201).json(blog.comments[blog.comments.length - 1]);
+});
+
 blogRoutes.post("/", middleware.userExptractor, async (request, response) => {
   const data = request.body;
   const user = request.user;
