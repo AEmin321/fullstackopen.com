@@ -1,5 +1,13 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
+import Typography from "@mui/material/Typography";
 
 const UserBlogs = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -16,15 +24,26 @@ const UserBlogs = () => {
   }
 
   return (
-    <div>
-      <h2>{userBlogList[0].user.username}</h2>
+    <Container>
+      <Typography m="1.4rem 0 1rem 0" variant="h3" gutterBottom>
+        {userBlogList[0].user.username}
+      </Typography>
+      <Divider />
       <h4>Added blogs:</h4>
-      <ul>
+      <List>
         {userBlogList.map((blog) => (
-          <li key={blog._id}>{blog.title}</li>
+          <Link
+            key={blog._id}
+            to={`/blogs/${blog._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton>
+              <ListItemText primary={blog.title} secondary={blog.author} />
+            </ListItemButton>
+          </Link>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 };
 
