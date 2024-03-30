@@ -3,6 +3,12 @@ import { useDispatch } from "react-redux";
 import { logIn } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -18,29 +24,49 @@ const Login = () => {
     navigate("/");
   };
   return (
-    <div>
-      <h2>Login to application</h2>
+    <Container
+      sx={{
+        height: "75vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Login
+      </Typography>
       <form onSubmit={handleLogin}>
-        <label htmlFor="Username">Username:</label>
-        <input
-          type="text"
-          name="Username"
-          value={username}
-          onChange={({ target }) => setUserName(target.value)}
-        />
-        <br />
-        <label htmlFor="Password">Password:</label>
-        <input
-          type="password"
-          name="Password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <div>
-          <button type="submit">Login</button>
-        </div>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <TextField
+            margin="dense"
+            id="standard-basic"
+            value={username}
+            onChange={({ target }) => setUserName(target.value)}
+            label="Username"
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            id="standard-basic"
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+            label="Password"
+            variant="standard"
+          />
+        </Box>
+        <Box sx={{ my: "1rem" }}>
+          <Button type="submit" variant="contained" disableElevation fullWidth>
+            Submit
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Container>
   );
 };
 

@@ -1,34 +1,25 @@
-import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 const Notification = () => {
-  const notiStyle = {
-    color: "white",
-    background: "linear-gradient(225deg, #1cc975 0%, #f1b086 100%)",
-    padding: "6px 12px",
-    borderRadius: 5,
-  };
-  const erStyle = {
-    color: "white",
-    background: "#FF6969",
-    padding: "6px 12px",
-    borderRadius: 5,
-  };
+  const { enqueueSnackbar } = useSnackbar();
 
   const notifications = useSelector(
     (state) => state.notifications.notifications
   );
+  const dispatch = useDispatch();
 
-  console.log(notifications);
+  useEffect(() => {
+    notifications.forEach((notification) => {
+      const vari = notification.includes("Error") ? "error" : "success";
+      enqueueSnackbar(notification, {
+        variant: vari,
+      });
+    });
+  }, [notifications, enqueueSnackbar, dispatch]);
 
-  return (
-    <div>
-      {notifications &&
-        notifications.map((item) => (
-          <div style={item.includes("Error") ? erStyle : notiStyle} key={item}>
-            {item}
-          </div>
-        ))}
-    </div>
-  );
+  return null;
 };
 
 export default Notification;

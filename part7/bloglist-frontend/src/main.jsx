@@ -6,6 +6,7 @@ import App from "./App";
 import notificationReducer from "./slices/notificationSlice";
 import blogsReducer from "./slices/blogsSlice";
 import userSlice from "./slices/userSlice";
+import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,8 @@ const store = configureStore({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <App />
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
   </Provider>
 );
