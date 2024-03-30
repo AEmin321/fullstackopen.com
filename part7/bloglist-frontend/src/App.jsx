@@ -1,13 +1,7 @@
 import { useEffect } from "react";
 import blogService from "./services/blogs";
 import Notification from "./components/notification";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   addNotification,
   removeNotification,
