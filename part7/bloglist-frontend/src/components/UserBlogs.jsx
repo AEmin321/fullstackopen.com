@@ -29,7 +29,9 @@ const UserBlogs = () => {
         {userBlogList[0].user.username}
       </Typography>
       <Divider />
-      <h4>Added blogs:</h4>
+      <Typography m="1.4rem 0 1rem 0" variant="h5" gutterBottom>
+        User Blogs:
+      </Typography>
       <List>
         {userBlogList.map((blog) => (
           <Link

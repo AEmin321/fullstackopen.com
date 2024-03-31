@@ -49,7 +49,21 @@ const App = () => {
           <Route path="/blogs/:id" element={<Blog user={user} />} />
           <Route path="/" element={<RenderBlogs />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/blogs" element={<UserBlogs />} />
+          <Route
+            path="/blogs"
+            element={
+              <h5
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "70vh",
+                }}
+              >
+                user blogs..
+              </h5>
+            }
+          />
         </Routes>
       )}
     </Router>

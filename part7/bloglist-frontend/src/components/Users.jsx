@@ -14,18 +14,28 @@ import Paper from "@mui/material/Paper";
 
 const Users = () => {
   const data = useSelector((state) => state.blogs);
+  console.log(data);
 
-  const userBlogCounts = data.reduce((counts, blog) => {
-    const userID = blog.user.id;
-    const userName = blog.user.username;
+  let userBlogCounts = {};
+  if (data && data.length > 0) {
+    userBlogCounts = data.reduce((counts, blog) => {
+      const userID = blog.user && blog.user.id;
+      console.log(userID);
+      const userName = blog.user && blog.user.username;
+      console.log(userName);
+      if (userID && userName) {
+        if (!counts[userName]) {
+          counts[userName] = { id: userID, count: 0 };
+        }
+        counts[userName].count++;
+      }
+      return counts;
+    }, {});
+  } else {
+    console.log("No blogs data available.");
+  }
 
-    if (!counts[userName]) {
-      counts[userName] = { id: userID, count: 0 };
-    }
-
-    counts[userName].count++;
-    return counts;
-  }, {});
+  console.log(userBlogCounts);
 
   return (
     <Container>
@@ -47,7 +57,7 @@ const Users = () => {
                 key={id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell key={user} component="th" scope="row">
                   <Link
                     style={{ textDecoration: "none", color: "inherit" }}
                     to={`/users/${id}`}
@@ -55,7 +65,9 @@ const Users = () => {
                     {user}
                   </Link>
                 </TableCell>
-                <TableCell align="right">{count}</TableCell>
+                <TableCell key={count} align="right">
+                  {count}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
